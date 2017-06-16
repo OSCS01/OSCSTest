@@ -10,12 +10,13 @@ using System.Windows.Forms;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+using System.IO.Compression;
 
 namespace ClientFileApp
 {
 	public partial class Form1 : Form
 	{
-		FolderBrowserDialog fld = new FolderBrowserDialog();
+		OpenFileDialog opd = new OpenFileDialog();
 		string ipadd = "fe80::2533:af37:2583:16da%6";
 
 		public Form1()
@@ -25,25 +26,7 @@ namespace ClientFileApp
 
 		private void fileDialogButton_Click(object sender, EventArgs e)
 		{
-			//if(fld.ShowDialog() == DialogResult.OK)
-			//{
-			//	pathBox.Text = fld.SelectedPath;
-			//}
-			//else
-			//{
-
-			//}
-
-			OpenFileDialog opd = new OpenFileDialog();
-
-			if (opd.ShowDialog() == DialogResult.OK)
-			{
-				pathBox.Text = opd.FileName;
-			}
-			else
-			{
-
-			}
+			pathBox.Text = openFileDialog();
 		}
 
 		private void sendBtn_Click(object sender, EventArgs e)
@@ -62,6 +45,18 @@ namespace ClientFileApp
 			stream.Close();
 			client.Close();
 			pathBox.Clear();
+		}
+
+		private string openFileDialog()
+		{
+			if (opd.ShowDialog() == DialogResult.OK)
+			{
+				return opd.FileName;
+			}
+			else
+			{
+				return null;
+			}
 		}
 	}
 }

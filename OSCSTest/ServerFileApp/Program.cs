@@ -36,9 +36,11 @@ namespace ServerFileApp
 				Console.Write("FileName: ");
 				string filename = Console.ReadLine();
 
-				stream.CopyTo(new FileStream("D:/filetransfer/" + filename + ".docx", FileMode.Create, FileAccess.Write));
+				stream.CopyTo(new FileStream("D:/filetransfer/" + filename + ".zip", FileMode.Create, FileAccess.Write));
 
 				Console.WriteLine("Success!");
+				client.Close();
+				stream.Close();
 			}
 		}
 	}
