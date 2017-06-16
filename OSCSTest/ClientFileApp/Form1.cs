@@ -61,6 +61,7 @@ namespace ClientFileApp
 			source.Close();
 			stream.Close();
 			client.Close();
+			pathBox.Clear();
 		}
 	}
 }

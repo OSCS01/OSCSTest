@@ -33,7 +33,12 @@ namespace ServerFileApp
 				byte[] receivedBuffer = new byte[2048];
 				NetworkStream stream = client.GetStream();
 
-				stream.CopyTo(new FileStream("D:/filetransfer/test.docx", FileMode.Create, FileAccess.Write));
+				Console.Write("FileName: ");
+				string filename = Console.ReadLine();
+
+				stream.CopyTo(new FileStream("D:/filetransfer/" + filename + ".docx", FileMode.Create, FileAccess.Write));
+
+				Console.WriteLine("Success!");
 			}
 		}
 	}
