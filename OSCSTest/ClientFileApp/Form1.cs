@@ -25,9 +25,20 @@ namespace ClientFileApp
 
 		private void fileDialogButton_Click(object sender, EventArgs e)
 		{
-			if(fld.ShowDialog() == DialogResult.OK)
+			//if(fld.ShowDialog() == DialogResult.OK)
+			//{
+			//	pathBox.Text = fld.SelectedPath;
+			//}
+			//else
+			//{
+
+			//}
+
+			OpenFileDialog opd = new OpenFileDialog();
+
+			if (opd.ShowDialog() == DialogResult.OK)
 			{
-				pathBox.Text = fld.SelectedPath;
+				pathBox.Text = opd.FileName;
 			}
 			else
 			{
