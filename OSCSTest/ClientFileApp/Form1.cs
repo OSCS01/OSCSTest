@@ -17,7 +17,7 @@ namespace ClientFileApp
 	public partial class Form1 : Form
 	{
 		OpenFileDialog opd = new OpenFileDialog();
-		string ipadd = "fe80::2533:af37:2583:16da%6";
+		string ipadd = "fe80::84a1:3136:baa0:6c41%14";
 
 		public Form1()
 		{
@@ -38,8 +38,36 @@ namespace ClientFileApp
 			byte[] sendBuffer = new byte[source.Length];
 
 			NetworkStream stream = client.GetStream();
+            // Tell the server what the incoming connection is doing
+            /*  e.g The first line can be an 'intent'; what the client wanna do i.e Upload, Retrieve, Query
+             *  there can be a switch (intent)
+             *                      case "Upload": 
+             *                              foo
+             *                              break;
+             *                      case "Retrieve": 
+             *                              bar
+             *                              break;
+             *                       
+             * 
+             * 
+             * 
+             * 
+             * 
+             * 
+             * 
+             * 
+             * 
+             */
+            StreamWriter sw = new StreamWriter(stream);
+            sw.WriteLine("Upload");
+            sw.WriteLine("new2.zip");
+            sw.WriteLine("adam");
+            sw.WriteLine("personal");
 
-			source.CopyTo(stream);
+            sw.Flush();
+
+            source.CopyTo(stream);
+
 
 			source.Close();
 			stream.Close();
