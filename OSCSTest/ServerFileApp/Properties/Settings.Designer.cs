@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ClientFileApp.Properties {
+namespace ServerFileApp.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -26,10 +26,11 @@ namespace ClientFileApp.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(localdb)\\MSSQLLocalDB;Integrated Security=True")]
-        public string ConnectionString {
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=Bob\\SQLExpress;Initial Catalog=EasyEncryption;Integrated Security=Tru" +
+            "e")]
+        public string EasyEncryptionConnectionString {
             get {
-                return ((string)(this["ConnectionString"]));
+                return ((string)(this["EasyEncryptionConnectionString"]));
             }
         }
     }
