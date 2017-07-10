@@ -163,11 +163,49 @@ namespace ServerFileApp
                         string itemname = reader.ReadLine();
                         string itemgroup = reader.ReadLine();
                         string itemowner = reader.ReadLine();
+                        string loguser = reader.ReadLine();
+                        string loguserpubkey = getUserPubKey(loguser);
                         string logxml = SerializeTableToString(retrieveLogs(itemname, itemowner, itemgroup));
                         Console.WriteLine(logxml);
                         using (StreamWriter logsw = new StreamWriter(stream))
                         {
-                            logsw.WriteLine(logxml);
+                            byte[] xmlarray = Encoding.UTF8.GetBytes(logxml);
+                            byte[] key = new byte[32];
+                            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+                            {
+                                rng.GetBytes(key);
+                                using (RijndaelManaged aes = new RijndaelManaged())
+                                {
+                                    aes.KeySize = 256;
+                                    aes.Mode = CipherMode.CBC;
+                                    aes.GenerateIV();
+                                    aes.Key = key;
+                                    using (var mems = new MemoryStream())
+                                    {
+                                        using (ICryptoTransform encryptor = aes.CreateEncryptor())
+                                        {
+                                            using (var cryptostream = new CryptoStream(mems, encryptor, CryptoStreamMode.Write))
+                                            {
+                                                cryptostream.Write(xmlarray, 0, xmlarray.Length);
+                                                cryptostream.FlushFinalBlock();
+                                                using (RSACryptoServiceProvider rsaxml = new RSACryptoServiceProvider())
+                                                {
+                                                    byte[] encryptedxml = mems.ToArray();
+                                                    rsaxml.FromXmlString(loguserpubkey);
+                                                    byte[] encryptedxmlkey = rsaxml.Encrypt(key, false);
+                                                    string base64xml = Convert.ToBase64String(encryptedxml);
+                                                    string base64key = Convert.ToBase64String(encryptedxmlkey);
+                                                    string base64IV = Convert.ToBase64String(aes.IV);
+                                                    logsw.WriteLine(base64key);
+                                                    logsw.WriteLine(base64IV);
+                                                    logsw.WriteLine(base64xml);
+                                                    logsw.Flush();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         break;
